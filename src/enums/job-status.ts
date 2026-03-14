@@ -1,0 +1,7 @@
+export enum JOB_STATUS {
+  WAIT = "WAIT",
+  ACTIVE = "ACTIVE",
+  COMPLETED = "COMPLETED",
+  FAILED = "FAILED",
+  STALLED = "STALLED",
+}
