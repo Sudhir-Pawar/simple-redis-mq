@@ -6,15 +6,24 @@ export class RedisConnectionManager extends EventEmitter {
   static host: string;
   static redisOptions?: RedisOptions;
   static instance: RedisConnectionManager;
-  private redisInstance: Redis;
+  private redisConnection: Redis;
   private constructor() {
     super();
 
-    this.redisInstance = new Redis(
+    this.redisConnection = new Redis(
       RedisConnectionManager.port,
       RedisConnectionManager.host,
       RedisConnectionManager.redisOptions || {},
     );
+
+    this.redisConnection.on("connect", function () {
+      console.log("Redis connection established");
+    });
+
+    this.redisConnection.on("error", function (error) {
+      console.log("Faield to establish connection with redis");
+      console.error(error);
+    });
   }
 
   public static getInstance(
@@ -36,9 +45,9 @@ export class RedisConnectionManager extends EventEmitter {
   }
 
   getRedisConnection() {
-    return this.redisInstance;
+    return this.redisConnection;
   }
   getWorkerConnection() {
-    return this.redisInstance.duplicate();
+    return this.redisConnection.duplicate();
   }
 }

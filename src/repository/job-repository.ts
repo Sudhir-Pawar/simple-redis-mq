@@ -56,10 +56,7 @@ export class JobRepository {
   }
 
   async pushJobToQueue(jobId: string): Promise<number> {
-    return await this.redisInstance.lpush(
-      this.getWaitQueueName(),
-      this.getJobId(jobId),
-    );
+    return await this.redisInstance.lpush(this.getWaitQueueName(), jobId);
   }
 
   async setJobInHash(jobId: string, job: JobDetails): Promise<number> {
